@@ -71,8 +71,10 @@ namespace CMS.Core.Services
 						var message = emailClient.GetMessage(i);
 						var emailMessage = new EmailMessage
 						{
-							Content = !string.IsNullOrEmpty(message.HtmlBody) ? message.HtmlBody : message.TextBody,
-							Subject = message.Subject
+							Subject = message.Subject,
+							Timestamp = message.Date.ToLocalTime().DateTime,
+							Content = !string.IsNullOrEmpty(message.HtmlBody) ? message.HtmlBody : message.TextBody
+
 						};
 						emailMessage.ToAddresses.AddRange(message.To.Select(x => (MailboxAddress)x).Select(x => new EmailAddress { Address = x.Address, Name = x.Name }));
 						emailMessage.FromAddresses.AddRange(message.From.Select(x => (MailboxAddress)x).Select(x => new EmailAddress { Address = x.Address, Name = x.Name }));

@@ -16,6 +16,7 @@ namespace CMS.Core.Models
 		public List<EmailAddress> ToAddresses { get; set; }
 		public List<EmailAddress> FromAddresses { get; set; }
 		public string Subject { get; set; }
+		public DateTime Timestamp { get; set; }
 		public string Content { get; set; }
 	}
 }
