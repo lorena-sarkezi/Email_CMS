@@ -13,17 +13,17 @@ using System.Threading.Tasks;
 
 namespace CMS.Core.Services
 {
-    public class EmailService : IEmailService
-    {
-        private readonly IEmailConfiguration emailConfiguration;
+	public class EmailService : IEmailService
+	{
+		private readonly IEmailConfiguration emailConfiguration;
 
-        public EmailService(IEmailConfiguration emailConfiguration)
-        {
-            this.emailConfiguration = emailConfiguration;
-        }
+		public EmailService(IEmailConfiguration emailConfiguration)
+		{
+			this.emailConfiguration = emailConfiguration;
+		}
 
-        public bool SendMail(EmailMessage emailMessage)
-        {
+		public bool SendMail(EmailMessage emailMessage)
+		{
 			var message = new MimeMessage();
 			message.To.AddRange(emailMessage.ToAddresses.Select(x => new MailboxAddress(x.Name, x.Address)));
 			message.From.AddRange(emailMessage.FromAddresses.Select(x => new MailboxAddress(x.Name, x.Address)));
@@ -53,9 +53,9 @@ namespace CMS.Core.Services
 
 			return true;
 		}
-        
-        public async Task<List<EmailMessage>> ReceiveMail(int count = 10)
-        {
+		
+		public async Task<List<EmailMessage>> ReceiveMail(int count = 10)
+		{
 			try {
 				using (var emailClient = new Pop3Client())
 				{
@@ -84,8 +84,8 @@ namespace CMS.Core.Services
 			}
 			catch (Exception e)
 			{
-				return new List<EmailMessage>();
+				throw;
 			}
 		}
-    }
+	}
 }

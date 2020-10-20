@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CMS.Core.Models;
 using CMS.Core.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,9 +21,9 @@ namespace CMS.Core.Controllers
         }
 
         [HttpGet("fetch")]
-        public void FetchEmail()
+        public async Task<List<EmailMessage>> FetchEmail()
         {
-            emailService.ReceiveMail();
+            return await emailService.ReceiveMail();
         }
     }
 }
