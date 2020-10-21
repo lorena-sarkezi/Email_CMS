@@ -1,4 +1,6 @@
 ﻿using CMS.Core.Models;
+using CMS.Data;
+using CMS.Models.Database;
 using MailKit.Net.Pop3;
 using MailKit.Net.Proxy;
 using MailKit.Net.Smtp;
@@ -16,11 +18,13 @@ namespace CMS.Core.Services
 	public class EmailService : IEmailService
 	{
 		private readonly IEmailConfiguration emailConfiguration;
+        private readonly CmsDbContext cmsDbContext;
 
-		public EmailService(IEmailConfiguration emailConfiguration)
+        public EmailService(IEmailConfiguration emailConfiguration, CmsDbContext cmsDbContext)
 		{
 			this.emailConfiguration = emailConfiguration;
-		}
+            this.cmsDbContext = cmsDbContext;
+        }
 
 		public bool SendMail(EmailMessage emailMessage)
 		{
@@ -80,6 +84,27 @@ namespace CMS.Core.Services
 						emailMessage.FromAddresses.AddRange(message.From.Select(x => (MailboxAddress)x).Select(x => new EmailAddress { Address = x.Address, Name = x.Name }));
 						emails.Add(emailMessage);
 					}
+
+
+					List<Email> emailsDb = new List<Email>();
+					foreach(EmailMessage message in emails)
+                    {
+						Email emailTemp = new Email
+						{
+							Subject = message.Subject,
+							Timestamp = message.Timestamp,
+							SenderEmail = message.FromAddresses.FirstOrDefault()?.Address,
+							SenderName = message.FromAddresses.FirstOrDefault()?.Name,
+							RecepientEmail = message.ToAddresses.FirstOrDefault()?.Address,
+							RecepientName = message.ToAddresses.FirstOrDefault()?.Name,
+							Content = message.Content
+						};
+
+						emailsDb.Add(emailTemp);
+                    }
+
+					cmsDbContext.AddRange(emailsDb);
+					await cmsDbContext.SaveChangesAsync();
 
 					return emails;
 				}

@@ -1,9 +1,11 @@
 using CMS.Core.Models;
 using CMS.Core.Services;
+using CMS.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,6 +29,8 @@ namespace Email_CMS
 
             services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
             services.AddTransient<IEmailService, EmailService>();
+            services.AddDbContext<CmsDbContext>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

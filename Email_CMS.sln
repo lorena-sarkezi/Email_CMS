@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMS.Core", "Email_CMS\CMS.Core.csproj", "{A091B2CC-DF2B-454F-93BE-C4803323928C}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "CMS.SQL", "CMS.Database\CMS.SQL.sqlproj", "{B41B25E5-2C05-41B8-9720-BC62C85A0AE7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMS.Data", "CMS.Models\CMS.Data.csproj", "{90798F93-1A5D-438F-B62A-FD69873BBABC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,16 @@ Global
 		{A091B2CC-DF2B-454F-93BE-C4803323928C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A091B2CC-DF2B-454F-93BE-C4803323928C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A091B2CC-DF2B-454F-93BE-C4803323928C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B41B25E5-2C05-41B8-9720-BC62C85A0AE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B41B25E5-2C05-41B8-9720-BC62C85A0AE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B41B25E5-2C05-41B8-9720-BC62C85A0AE7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B41B25E5-2C05-41B8-9720-BC62C85A0AE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B41B25E5-2C05-41B8-9720-BC62C85A0AE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B41B25E5-2C05-41B8-9720-BC62C85A0AE7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{90798F93-1A5D-438F-B62A-FD69873BBABC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90798F93-1A5D-438F-B62A-FD69873BBABC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90798F93-1A5D-438F-B62A-FD69873BBABC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90798F93-1A5D-438F-B62A-FD69873BBABC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
