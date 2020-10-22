@@ -1,4 +1,5 @@
 ﻿using CMS.Core.Models;
+using CMS.Data.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace CMS.Core.Services
     {
         bool SendMail(EmailMessage emailMessage);
         Task<List<EmailMessage>> ReceiveMail(int count = 10);
+        Task<List<MailThreadBasic>> GetBasicMailThreads();
     }
 }

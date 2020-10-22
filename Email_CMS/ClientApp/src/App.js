@@ -1,22 +1,43 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
+import React from 'react';
 
-import './custom.css'
+import ThreadsTable from './components/ThreadsTable';
 
-export default class App extends Component {
-  static displayName = App.name;
+import { Row, Col, Layout } from 'antd';
 
-  render () {
-    return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
-      </Layout>
-    );
-  }
+import './style.css';
+import 'antd/dist/antd.css';
+
+export default function App() {
+
+  const sideRowProps = {
+    xs: 0,
+    sm: 2,
+    md: 3,
+    lg: 6
+  };
+
+  const mainRowProps = {
+    xs: 24,
+    sm: 20,
+    md: 18,
+    lg: 12
+  };
+
+
+  return (
+    <>
+      <Layout.Header></Layout.Header>
+      <Layout.Content>
+        <Row>
+          <Col {...sideRowProps}></Col>
+          <Col {...mainRowProps}>
+            <ThreadsTable />
+          </Col>
+          <Col {...sideRowProps}></Col>
+        </Row>
+      </Layout.Content>
+
+    </>
+
+  );
 }

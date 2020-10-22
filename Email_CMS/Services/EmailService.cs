@@ -1,9 +1,11 @@
 ﻿using CMS.Core.Models;
 using CMS.Data;
+using CMS.Data.Common;
 using CMS.Models.Database;
 using MailKit.Net.Pop3;
 using MailKit.Net.Proxy;
 using MailKit.Net.Smtp;
+using Microsoft.EntityFrameworkCore;
 using MimeKit;
 using MimeKit.Text;
 using System;
@@ -114,5 +116,10 @@ namespace CMS.Core.Services
 				throw;
 			}
 		}
+
+		public async Task<List<MailThreadBasic>> GetBasicMailThreads()
+        {
+			return await cmsDbContext.Emails.Select(x => x.ToMailThreadBasic()).ToListAsync();
+        }
 	}
 }

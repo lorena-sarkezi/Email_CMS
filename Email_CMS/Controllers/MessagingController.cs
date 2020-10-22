@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CMS.Core.Models;
 using CMS.Core.Services;
+using CMS.Data.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,12 @@ namespace CMS.Core.Controllers
         public async Task<List<EmailMessage>> FetchEmail()
         {
             return await emailService.ReceiveMail();
+        }
+
+        [HttpGet("threads")]
+        public async Task<List<MailThreadBasic>> GetMailThreadsBasic()
+        {
+            return await emailService.GetBasicMailThreads();
         }
     }
 }
