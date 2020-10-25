@@ -1,4 +1,4 @@
-﻿using CMS.Models.Database;
+﻿using CMS.Data.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,5 +14,8 @@ namespace CMS.Data
         }
 
         public virtual DbSet<Email> Emails { get; set; }
+        public virtual DbSet<ConvoThread> Threads { get; set; }
+        public virtual DbSet<Sender> Senders { get; set; }
+        public virtual DbSet<Recepient> Recepients { get; set; }
     }
 }

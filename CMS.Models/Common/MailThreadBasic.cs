@@ -1,4 +1,4 @@
-﻿using CMS.Models.Database;
+﻿using CMS.Data.Database;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,8 +21,8 @@ namespace CMS.Data.Common
             {
                 Subject = email.Subject,
                 Timestamp = email.Timestamp,
-                SenderEmail = email.SenderEmail,
-                SenderName = email.SenderName
+                //SenderEmail = email.SenderEmail,
+                //SenderName = email.SenderName
             };
         }
     }

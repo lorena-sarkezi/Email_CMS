@@ -1,22 +1,32 @@
-﻿using System;
+﻿using CMS.Data.Database;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace CMS.Models.Database
+namespace CMS.Data.Database
 {
-    [Table("emails", Schema ="dbo")]
+    [Table("Emails", Schema ="dbo")]
     public class Email
     {
         [Required, Key]
         public int Id { get; set; }
+        public int ThreadId { get; set; }
         public string Subject { get; set; }
         public DateTime Timestamp { get; set; }
-        public string SenderEmail { get; set; }
-        public string SenderName { get; set; }
-        public string RecepientEmail { get; set; }
-        public string RecepientName { get; set; }
-        public string Content { get; set; }
+        public string HtmlContent { get; set; }
+        public string TextContent { get; set; }
+        public string MessageContent { get; set; }
+
+
+        [InverseProperty("Email")]
+        public virtual IEnumerable<Sender> Senders { get; set; }
+
+        [InverseProperty("Email")]
+
+        public virtual IEnumerable<Recepient> Recepients { get; set; }
+
+        public virtual ConvoThread Thread { get; set; }
     }
 }

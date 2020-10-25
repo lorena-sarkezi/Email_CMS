@@ -1,7 +1,8 @@
 ﻿using CMS.Core.Models;
 using CMS.Data;
 using CMS.Data.Common;
-using CMS.Models.Database;
+using CMS.Data.Database;
+using CMS.Data.Database;
 using MailKit.Net.Pop3;
 using MailKit.Net.Proxy;
 using MailKit.Net.Smtp;
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CMS.Core.Services
@@ -21,11 +23,13 @@ namespace CMS.Core.Services
 	{
 		private readonly IEmailConfiguration emailConfiguration;
         private readonly CmsDbContext cmsDbContext;
+        private readonly IMessageParserService messageParser;
 
-        public EmailService(IEmailConfiguration emailConfiguration, CmsDbContext cmsDbContext)
+        public EmailService(IEmailConfiguration emailConfiguration, CmsDbContext cmsDbContext, IMessageParserService messageParser)
 		{
 			this.emailConfiguration = emailConfiguration;
             this.cmsDbContext = cmsDbContext;
+            this.messageParser = messageParser;
         }
 
 		public bool SendMail(EmailMessage emailMessage)
@@ -60,55 +64,38 @@ namespace CMS.Core.Services
 			return true;
 		}
 		
-		public async Task<List<EmailMessage>> ReceiveMail(int count = 10)
+		public async Task<List<MailThreadBasic>> ReceiveMail(int count = 10)
 		{
 			try {
 				using (var emailClient = new Pop3Client())
 				{
+					//Email latestMsg = await cmsDbContext.Emails.OrderByDescending(x => x.Timestamp).FirstOrDefaultAsync();
+
 					await emailClient.ConnectAsync(emailConfiguration.PopServer, emailConfiguration.PortPop);
 
 					emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
 
 					await emailClient.AuthenticateAsync(emailConfiguration.PopUsername, emailConfiguration.PopPassword);
 
-					List<EmailMessage> emails = new List<EmailMessage>();
+					List<MimeMessage> mimeMessages = new List<MimeMessage>();
+
 					for (int i = 0; i < emailClient.Count && i < count; i++)
 					{
-						var message = emailClient.GetMessage(i);
-						var emailMessage = new EmailMessage
-						{
-							Subject = message.Subject,
-							Timestamp = message.Date.ToLocalTime().DateTime,
-							Content = !string.IsNullOrEmpty(message.HtmlBody) ? message.HtmlBody : message.TextBody
-
-						};
-						emailMessage.ToAddresses.AddRange(message.To.Select(x => (MailboxAddress)x).Select(x => new EmailAddress { Address = x.Address, Name = x.Name }));
-						emailMessage.FromAddresses.AddRange(message.From.Select(x => (MailboxAddress)x).Select(x => new EmailAddress { Address = x.Address, Name = x.Name }));
-						emails.Add(emailMessage);
+						var message = await emailClient.GetMessageAsync(i);
+						mimeMessages.Add(message);
 					}
 
 
-					List<Email> emailsDb = new List<Email>();
-					foreach(EmailMessage message in emails)
+					List<Email> emails = new List<Email>();
+					foreach (MimeMessage mimeMessage in mimeMessages)
                     {
-						Email emailTemp = new Email
-						{
-							Subject = message.Subject,
-							Timestamp = message.Timestamp,
-							SenderEmail = message.FromAddresses.FirstOrDefault()?.Address,
-							SenderName = message.FromAddresses.FirstOrDefault()?.Name,
-							RecepientEmail = message.ToAddresses.FirstOrDefault()?.Address,
-							RecepientName = message.ToAddresses.FirstOrDefault()?.Name,
-							Content = message.Content
-						};
-
-						emailsDb.Add(emailTemp);
+						emails.Add(await messageParser.ConvertMimeMessageToLocalEmail(mimeMessage));
                     }
 
-					cmsDbContext.AddRange(emailsDb);
+					cmsDbContext.AddRange(emails);
 					await cmsDbContext.SaveChangesAsync();
 
-					return emails;
+					return emails.Select(x => x.ToMailThreadBasic()).ToList();
 				}
 			}
 			catch (Exception e)
@@ -121,5 +108,6 @@ namespace CMS.Core.Services
         {
 			return await cmsDbContext.Emails.Select(x => x.ToMailThreadBasic()).ToListAsync();
         }
+
 	}
 }
