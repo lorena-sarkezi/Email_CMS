@@ -32,17 +32,16 @@ namespace CMS.Core.Services
             this.messageParser = messageParser;
         }
 
-		public bool SendMail(EmailMessage emailMessage)
+		public bool SendMail(Email email)
 		{
 			var message = new MimeMessage();
-			message.To.AddRange(emailMessage.ToAddresses.Select(x => new MailboxAddress(x.Name, x.Address)));
-			message.From.AddRange(emailMessage.FromAddresses.Select(x => new MailboxAddress(x.Name, x.Address)));
+			message.To.AddRange(email.Senders.Select(x => new MailboxAddress(x.SenderName, x.SenderEmail)));
+			message.From.AddRange(email.Recepients.Select(x => new MailboxAddress(x.RecepientName, x.RecepientEmail)));
 
-			message.Subject = emailMessage.Subject;
-			//We will say we are sending HTML. But there are options for plaintext etc. 
+			message.Subject = String.Join(" ", email.Thread.ThreadTitle,"Re:");
 			message.Body = new TextPart(TextFormat.Html)
 			{
-				Text = emailMessage.Content
+				Text = email.MessageContent
 			};
 
 			//Be careful that the SmtpClient class is the one from Mailkit not the framework!

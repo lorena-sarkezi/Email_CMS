@@ -10,11 +10,12 @@ namespace CMS.Data.Database
     [Table("Emails", Schema ="dbo")]
     public class Email
     {
-        [Required, Key]
+        [Required, Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int ThreadId { get; set; }
         public string Subject { get; set; }
         public DateTime Timestamp { get; set; }
+        public bool IsIncoming { get; set; }
         public string HtmlContent { get; set; }
         public string TextContent { get; set; }
         public string MessageContent { get; set; }

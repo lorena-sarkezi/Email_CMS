@@ -58,14 +58,16 @@ namespace CMS.Core.Services
 
 			Email email = new Email
 			{
+				Id = 0,
 				Subject = mimeMessage.Subject,
+				Timestamp = mimeMessage.Date.LocalDateTime.Date,
 				HtmlContent = mimeMessage.HtmlBody,
 				TextContent = mimeMessage.TextBody,
 				MessageContent = mailMessageTextBody,
 				Recepients = recepients,
 				Senders = senders,
-				Thread = thread
-				
+				Thread = thread,
+				IsIncoming = senders.Count(x => x.SenderEmail == "ntpwstvzcms@gmail.com") > 0 ? false : true
 			};
 
 			return email;

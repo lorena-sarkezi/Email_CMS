@@ -10,7 +10,7 @@ namespace CMS.Data.Database
     [Table("Recepients")]
     public class Recepient
     {
-        [Required, Key]
+        [Required, Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required, ForeignKey("Email")]
         public int EmailId { get; set; }
