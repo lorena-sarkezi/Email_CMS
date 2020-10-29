@@ -33,5 +33,11 @@ namespace CMS.Core.Controllers
         {
             return await emailService.GetBasicMailThreads();
         }
+
+        [HttpGet("threads/{threadId}")]
+        public async Task<ThreadViewModel> GetThread([FromRoute] int threadId)
+        {
+            return await emailService.GetThread(threadId);
+        }
     }
 }

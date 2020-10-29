@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace CMS.Data.Common
+{
+    public class ThreadViewModel
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string InitialSender { get; set; }
+        public IEnumerable<MessageViewModel> Messages { get; set; }
+    }
+}

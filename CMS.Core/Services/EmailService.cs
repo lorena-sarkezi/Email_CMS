@@ -108,5 +108,16 @@ namespace CMS.Core.Services
 			return await cmsDbContext.Emails.Select(x => x.ToMailThreadBasic()).ToListAsync();
         }
 
+
+		public async Task<ThreadViewModel> GetThread(int threadId)
+        {
+			ConvoThread thread = await cmsDbContext.Threads
+												   .Include(x => x.Emails)
+												   .FirstOrDefaultAsync(x => x.Id == threadId);
+
+			return thread.GetViewModel();
+
+        }
+
 	}
 }

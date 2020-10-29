@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Recepients]
 (
-	[Id] INT NOT NULL PRIMARY KEY,
+	[Id] INT NOT NULL IDENTITY PRIMARY KEY,
 	[EmailId] INT NOT NULL,
 	[RecepientName] NVARCHAR(128) NULL,
 	[RecepientEmail] NVARCHAR(128) NOT NULL,

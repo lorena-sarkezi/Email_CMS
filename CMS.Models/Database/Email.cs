@@ -1,4 +1,5 @@
-﻿using CMS.Data.Database;
+﻿using CMS.Data.Common;
+using CMS.Data.Database;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -29,5 +30,18 @@ namespace CMS.Data.Database
         public virtual IEnumerable<Recepient> Recepients { get; set; }
 
         public virtual ConvoThread Thread { get; set; }
+    }
+
+    public static partial class ModelExtensions
+    {
+        public static MessageViewModel GetViewModel(this Email email)
+        {
+            return new MessageViewModel
+            {
+                MessageContent = email.MessageContent,
+                IsOwnMessage = !email.IsIncoming,
+                Timestamp = email.Timestamp
+            };
+        }
     }
 }

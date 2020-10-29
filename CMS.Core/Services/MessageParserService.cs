@@ -43,6 +43,7 @@ namespace CMS.Core.Services
 			}
 
 			thread.LatestMessageTimestamp = mimeMessage.Date.LocalDateTime.Date;
+			
 
 			List<Sender> senders = mimeMessage.From.Select(x => (MailboxAddress)x).Select(x => new Sender
 			{
@@ -56,9 +57,18 @@ namespace CMS.Core.Services
 				RecepientName = x.Name
 			}).ToList();
 
+			if (thread.Id == 0)
+			{
+				thread.InitialSenderEmail = senders.FirstOrDefault().SenderEmail;
+
+			}
+
+			
+
 			Email email = new Email
 			{
 				Id = 0,
+				ThreadId = thread.Id != 0 ? thread.Id : 0, 
 				Subject = mimeMessage.Subject,
 				Timestamp = mimeMessage.Date.LocalDateTime.Date,
 				HtmlContent = mimeMessage.HtmlBody,
@@ -66,7 +76,7 @@ namespace CMS.Core.Services
 				MessageContent = mailMessageTextBody,
 				Recepients = recepients,
 				Senders = senders,
-				Thread = thread,
+				Thread = thread.Id == 0 ? thread : null,
 				IsIncoming = senders.Count(x => x.SenderEmail == "ntpwstvzcms@gmail.com") > 0 ? false : true
 			};
 

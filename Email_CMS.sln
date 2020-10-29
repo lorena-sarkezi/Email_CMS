@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMS.Core", "Email_CMS\CMS.Core.csproj", "{A091B2CC-DF2B-454F-93BE-C4803323928C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMS.Core", "CMS.Core\CMS.Core.csproj", "{A091B2CC-DF2B-454F-93BE-C4803323928C}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "CMS.SQL", "CMS.Database\CMS.SQL.sqlproj", "{B41B25E5-2C05-41B8-9720-BC62C85A0AE7}"
 EndProject

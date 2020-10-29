@@ -12,6 +12,7 @@ namespace CMS.Data.Database
     {
         [Required, Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
         [Required, ForeignKey("Email")]
         public int EmailId { get; set; }
         public string SenderName { get; set; }
