@@ -17,6 +17,7 @@ namespace CMS.Data.Database
         public string ThreadTitle { get; set; }
         [Required]
         public string InitialSenderEmail { get; set; }
+        public string InitialSenderName { get; set; }
         [Required]
         public DateTime LatestMessageTimestamp { get; set; }
         [Required]
@@ -34,8 +35,10 @@ namespace CMS.Data.Database
             return new ThreadViewModel
             {
                 Id = thread.Id,
-                InitialSender = thread.InitialSenderEmail,
-                Messages = thread.Emails.Select(x => x.GetViewModel()),
+                SenderEmail = thread.InitialSenderEmail,
+                SenderName = thread.InitialSenderName,
+                LatestMessageTimestamp = thread.LatestMessageTimestamp,
+                Messages = thread.Emails?.Select(x => x.GetViewModel()),
                 Title = thread.ThreadTitle
             };
         }

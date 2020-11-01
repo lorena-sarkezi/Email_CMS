@@ -31,7 +31,7 @@ namespace Email_CMS
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IMessageParserService, MessageParserService>();
             services.AddDbContext<CmsDbContext>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
+                options => options.UseMySql(Configuration.GetConnectionString("Default")));
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -76,15 +76,15 @@ namespace Email_CMS
                     pattern: "{controller}/{action=Index}/{id?}");
             });
 
-            //app.UseSpa(spa =>
-            //{
-            //    spa.Options.SourcePath = "ClientApp";
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
 
-            //    if (env.IsDevelopment())
-            //    {
-            //        spa.UseReactDevelopmentServer(npmScript: "start");
-            //    }
-            //});
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
         }
     }
 }

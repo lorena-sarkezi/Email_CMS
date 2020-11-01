@@ -1,6 +1,8 @@
 import React from 'react';
+import { Switch, Route, } from 'react-router-dom';
 
 import ThreadsTable from './components/ThreadsTable';
+import MessagesDisplayContainer from './components/MessagesDisplayContainer';
 
 import { Row, Col, Layout } from 'antd';
 
@@ -28,10 +30,22 @@ export default function App() {
     <>
       <Layout.Header></Layout.Header>
       <Layout.Content>
+
+
         <Row>
           <Col {...sideRowProps}></Col>
           <Col {...mainRowProps}>
-            <ThreadsTable />
+            <Switch>
+              <Route path="/" exact >
+                <ThreadsTable />
+              </Route>
+
+              <Route path="/threads/:threadId">
+                <MessagesDisplayContainer />
+              </Route>
+              
+            </Switch>
+
           </Col>
           <Col {...sideRowProps}></Col>
         </Row>

@@ -60,6 +60,7 @@ namespace CMS.Core.Services
 			if (thread.Id == 0)
 			{
 				thread.InitialSenderEmail = senders.FirstOrDefault().SenderEmail;
+				thread.InitialSenderName = senders.FirstOrDefault().SenderName;
 
 			}
 

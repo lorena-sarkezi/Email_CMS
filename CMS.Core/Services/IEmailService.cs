@@ -13,7 +13,7 @@ namespace CMS.Core.Services
     {
         bool SendMail(Email email);
         Task<List<MailThreadBasic>> ReceiveMail(int count = 10);
-        Task<List<MailThreadBasic>> GetBasicMailThreads();
+        Task<List<ThreadViewModel>> GetThreadsListPaged();
 
         public Task<ThreadViewModel> GetThread(int threadId);
     }

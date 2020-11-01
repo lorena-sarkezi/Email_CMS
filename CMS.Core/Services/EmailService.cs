@@ -103,9 +103,10 @@ namespace CMS.Core.Services
 			}
 		}
 
-		public async Task<List<MailThreadBasic>> GetBasicMailThreads()
+		public async Task<List<ThreadViewModel>> GetThreadsListPaged()
         {
-			return await cmsDbContext.Emails.Select(x => x.ToMailThreadBasic()).ToListAsync();
+			List<ThreadViewModel> threads = (await cmsDbContext.Threads.ToListAsync()).Select(x => x.GetViewModel()).ToList();
+			return threads;
         }
 
 
@@ -113,6 +114,9 @@ namespace CMS.Core.Services
         {
 			ConvoThread thread = await cmsDbContext.Threads
 												   .Include(x => x.Emails)
+												   .ThenInclude(x => x.Senders)
+												   .Include(x => x.Emails)
+												   .ThenInclude(x => x.Recepients)
 												   .FirstOrDefaultAsync(x => x.Id == threadId);
 
 			return thread.GetViewModel();

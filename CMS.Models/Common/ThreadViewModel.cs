@@ -8,7 +8,9 @@ namespace CMS.Data.Common
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public string InitialSender { get; set; }
+        public string SenderName { get; set; }
+        public string SenderEmail { get; set; }
+        public DateTime LatestMessageTimestamp { get; set; }
         public IEnumerable<MessageViewModel> Messages { get; set; }
     }
 }

@@ -4,11 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Text;
 
 namespace CMS.Data.Database
 {
-    [Table("Emails", Schema ="dbo")]
+    [Table("Emails")]
     public class Email
     {
         [Required, Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -39,6 +40,9 @@ namespace CMS.Data.Database
             return new MessageViewModel
             {
                 MessageContent = email.MessageContent,
+                HtmlContent = email.HtmlContent,
+                SenderEmail = email.Senders?.FirstOrDefault().SenderEmail,
+                SenderName = email.Senders?.FirstOrDefault().SenderName,
                 IsOwnMessage = !email.IsIncoming,
                 Timestamp = email.Timestamp
             };

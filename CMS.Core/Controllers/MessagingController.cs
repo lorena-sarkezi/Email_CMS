@@ -29,9 +29,9 @@ namespace CMS.Core.Controllers
         }
 
         [HttpGet("threads")]
-        public async Task<List<MailThreadBasic>> GetMailThreadsBasic()
+        public async Task<List<ThreadViewModel>> GetMailThreadsListPaged()
         {
-            return await emailService.GetBasicMailThreads();
+            return await emailService.GetThreadsListPaged();
         }
 
         [HttpGet("threads/{threadId}")]
