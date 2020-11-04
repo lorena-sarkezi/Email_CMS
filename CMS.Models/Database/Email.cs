@@ -15,6 +15,8 @@ namespace CMS.Data.Database
         [Required, Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int ThreadId { get; set; }
+        public string ServerMessageId { get; set; }
+        public string InResponseTo { get; set; }
         public string Subject { get; set; }
         public DateTime Timestamp { get; set; }
         public bool IsIncoming { get; set; }

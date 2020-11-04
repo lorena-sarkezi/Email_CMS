@@ -2,7 +2,6 @@
 using CMS.Data;
 using CMS.Data.Common;
 using CMS.Data.Database;
-using CMS.Data.Database;
 using MailKit.Net.Pop3;
 using MailKit.Net.Proxy;
 using MailKit.Net.Smtp;
@@ -32,23 +31,57 @@ namespace CMS.Core.Services
             this.messageParser = messageParser;
         }
 
-		public bool SendMail(Email email)
+		public async Task<Email> ComposeEmail(int threadId, string content)
+        {
+			ConvoThread thread = await cmsDbContext.Threads
+												   .FirstOrDefaultAsync(x => x.Id == threadId);
+			Email latestEmail = await cmsDbContext.Emails
+												  .OrderByDescending(x => x.Timestamp)
+												  .FirstOrDefaultAsync(x => x.ThreadId == threadId);
+
+			Sender sender = new Sender
+			{
+				SenderEmail = "ntpwstvzcms@gmail.com",
+				SenderName = "NTPWSTVZCMS"
+			};
+
+			Recepient recepient = new Recepient
+			{
+				RecepientName = thread.InitialSenderName,
+				RecepientEmail = thread.InitialSenderEmail
+			};
+
+
+			Email newMessage = new Email
+			{
+				Subject = string.Join(" ", "Re:", thread.ThreadTitle),
+				TextContent = content,
+				InResponseTo = latestEmail.ServerMessageId,
+				Senders = new List<Sender> { sender },
+				Recepients = new List<Recepient> { recepient }
+			};
+
+
+			return newMessage;
+        }
+
+		public async Task<bool> SendMail(Email email)
 		{
 			var message = new MimeMessage();
-			message.To.AddRange(email.Senders.Select(x => new MailboxAddress(x.SenderName, x.SenderEmail)));
-			message.From.AddRange(email.Recepients.Select(x => new MailboxAddress(x.RecepientName, x.RecepientEmail)));
+			message.From.AddRange(email.Senders.Select(x => new MailboxAddress(x.SenderName, x.SenderEmail)));
+			message.To.AddRange(email.Recepients.Select(x => new MailboxAddress(x.RecepientName, x.RecepientEmail)));
 
-			message.Subject = String.Join(" ", email.Thread.ThreadTitle,"Re:");
-			message.Body = new TextPart(TextFormat.Html)
+			message.Subject = email.Subject;
+			message.Body = new TextPart(TextFormat.Plain)
 			{
-				Text = email.MessageContent
+				Text = email.TextContent
 			};
 
 			//Be careful that the SmtpClient class is the one from Mailkit not the framework!
 			using (var emailClient = new SmtpClient())
 			{
 				//The last parameter here is to use SSL (Which you should!)
-				emailClient.Connect(emailConfiguration.SmtpServer, emailConfiguration.SmtpPortTLS, true);
+				emailClient.Connect(emailConfiguration.SmtpServer, emailConfiguration.SmtpPortSSL, true);
 
 				//Remove any OAuth functionality as we won't be using it. 
 				emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
@@ -60,10 +93,13 @@ namespace CMS.Core.Services
 				emailClient.Disconnect(true);
 			}
 
+			cmsDbContext.Add(email);
+			await cmsDbContext.SaveChangesAsync();
+
 			return true;
 		}
 		
-		public async Task<List<MailThreadBasic>> ReceiveMail(int count = 10)
+		public async Task<List<MailThreadBasic>> ReceiveMail(int count = 1)
 		{
 			try {
 				using (var emailClient = new Pop3Client())
@@ -84,11 +120,21 @@ namespace CMS.Core.Services
 						mimeMessages.Add(message);
 					}
 
+					//Fetch existing email IDs which are also among fetched messages from server
+					List<string> fetchedMessageIds = mimeMessages.Select(x => x.MessageId).ToList();
+					List<string> existingIds = new List<string>();
+					existingIds = (await cmsDbContext.Emails.Where(x => fetchedMessageIds.Contains(x.ServerMessageId)).ToListAsync()).Select(x => x.ServerMessageId).ToList();
+
 
 					List<Email> emails = new List<Email>();
 					foreach (MimeMessage mimeMessage in mimeMessages)
                     {
-						emails.Add(await messageParser.ConvertMimeMessageToLocalEmail(mimeMessage));
+						// Only parse messages with IDs not in DB
+                        if (!existingIds.Contains(mimeMessage.MessageId))
+                        {
+							emails.Add(await messageParser.ConvertMimeMessageToLocalEmail(mimeMessage));
+						}
+						
                     }
 
 					cmsDbContext.AddRange(emails);

@@ -22,6 +22,16 @@ namespace CMS.Core.Controllers
             this.emailService = emailService;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SendMessage(SendMessageModel model)
+        {
+            Email email = await emailService.ComposeEmail(model.ThreadId, model.MessageContent);
+            emailService.SendMail(email);
+
+            return Ok();
+        }
+        
+
         [HttpGet("fetch")]
         public async Task<List<MailThreadBasic>> FetchEmail()
         {

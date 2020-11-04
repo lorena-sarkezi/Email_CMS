@@ -6,6 +6,7 @@ import LeftOutlined from '@ant-design/icons/LeftOutlined';
 import MailTwoTone from '@ant-design/icons/MailTwoTone';
 
 import MessageDisplayCard from './MessageDisplayCard';
+import MessageReplyModal from './MessageReplyModal';
 
 import axios from 'axios';
 
@@ -22,14 +23,13 @@ const LoadingSpinner = () => {
 
 const MessagesDisplayContainer = (props) =>{
 
-    
-
     const {threadId} = useParams();
 
     console.log(threadId);
 
     const [threadData, setThreadData] = useState(null);
-    const [isLoading, setIsLoading] =useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [showReplyModal, setShowReplyModal] = useState(false);
 
     const getThreadMessages = async () =>{
         setIsLoading(true);
@@ -46,6 +46,8 @@ const MessagesDisplayContainer = (props) =>{
 
     return(
         <React.Fragment>
+            <MessageReplyModal visible={showReplyModal} visibleHandler={setShowReplyModal}/>
+
             <Row style={{marginBottom:"5px"}}>
                 <Col flex="0 1 auto">
                     <Link to="/">
@@ -59,7 +61,7 @@ const MessagesDisplayContainer = (props) =>{
 
                 <Col flex="0 1 auto">
                     <Link to="#" >
-                        <Button tyle="default" icon={<MailTwoTone />}>
+                        <Button tyle="default" icon={<MailTwoTone />} onClick={() => setShowReplyModal(true)}>
                             Reply
                         </Button> 
                     </Link>

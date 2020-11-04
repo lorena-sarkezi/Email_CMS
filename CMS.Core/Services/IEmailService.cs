@@ -11,7 +11,8 @@ namespace CMS.Core.Services
 {
     public interface IEmailService
     {
-        bool SendMail(Email email);
+        Task<Email> ComposeEmail(int threadId, string content);
+        Task<bool> SendMail(Email email);
         Task<List<MailThreadBasic>> ReceiveMail(int count = 10);
         Task<List<ThreadViewModel>> GetThreadsListPaged();
 

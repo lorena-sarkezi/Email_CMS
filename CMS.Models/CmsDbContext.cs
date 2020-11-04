@@ -13,6 +13,11 @@ namespace CMS.Data
 
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            
+        }
+
         public virtual DbSet<Email> Emails { get; set; }
         public virtual DbSet<ConvoThread> Threads { get; set; }
         public virtual DbSet<Sender> Senders { get; set; }

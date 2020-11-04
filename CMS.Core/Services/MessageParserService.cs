@@ -71,7 +71,9 @@ namespace CMS.Core.Services
 				Id = 0,
 				ThreadId = thread.Id != 0 ? thread.Id : 0, 
 				Subject = mimeMessage.Subject,
-				Timestamp = mimeMessage.Date.LocalDateTime.Date,
+				Timestamp = mimeMessage.Date.LocalDateTime,
+				ServerMessageId = mimeMessage.MessageId,
+				InResponseTo = mimeMessage.InReplyTo,
 				HtmlContent = mimeMessage.HtmlBody,
 				TextContent = mimeMessage.TextBody,
 				MessageContent = mailMessageTextBody,
@@ -99,8 +101,8 @@ namespace CMS.Core.Services
 
 				int hashIndex = threadNumberStr.IndexOf("#");
 
-				threadNumberStr = threadNumberStr.Substring(hashIndex + 1, threadNumberStr.Length - 1);
-				threadNumberStr = threadNumberStr.Substring(0, threadNumberStr.Length - 1);
+				threadNumberStr = threadNumberStr.Substring(hashIndex + 1, threadNumberStr.Length - (hashIndex + 2));
+				//threadNumberStr = threadNumberStr.Substring(0, threadNumberStr.Length - 1);
 
 				int threadNumber = Convert.ToInt32(threadNumberStr);
 

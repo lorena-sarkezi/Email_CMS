@@ -21,4 +21,17 @@ namespace CMS.Data.Database
 
         public virtual Email Email { get; set; }
     }
+
+    public static partial class ModelExtensions
+    {
+        public static Sender ToSender(this Recepient recepient)
+        {
+            return new Sender
+            {
+                EmailId = recepient.EmailId,
+                SenderEmail = recepient.RecepientEmail,
+                SenderName = recepient.RecepientName
+            };
+        }
+    }
 }

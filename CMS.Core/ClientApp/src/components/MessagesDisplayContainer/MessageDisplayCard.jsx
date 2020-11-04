@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Card, Spin, Button, Col, Row } from 'antd';
+import React  from 'react';
+import { Card } from 'antd';
 
 const MessageDisplayCard = (props) => {
 
@@ -10,16 +9,20 @@ const MessageDisplayCard = (props) => {
     };
 
     const titleColor={
-        backgroundColor: props.isOwnMessage !== false ? '#91d5ff' : 'white'
+        backgroundColor: props.record.isOwnMessage === true ? 'white' : '#91d5ff'
     };
 
+    const cardStyle={
+        marginBottom: '20px'
+    }
 
+    console.log(titleColor);
     
     console.log(props.record);
     
     const sender = `${props.record.senderName} (${props.record.senderEmail})`
     return(
-        <Card title={sender} headStyle={titleColor}>
+        <Card title={sender} headStyle={titleColor} style={cardStyle}>
             <div style={textWrap} >
                 {props.record.messageContent}
             </div>
