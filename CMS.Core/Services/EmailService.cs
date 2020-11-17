@@ -36,8 +36,11 @@ namespace CMS.Core.Services
 			ConvoThread thread = await cmsDbContext.Threads
 												   .FirstOrDefaultAsync(x => x.Id == threadId);
 			Email latestEmail = await cmsDbContext.Emails
+												  .Include(x => x.Recepients)
+												  .Include(x => x.Senders)
 												  .OrderByDescending(x => x.Timestamp)
 												  .FirstOrDefaultAsync(x => x.ThreadId == threadId);
+
 
 			Sender sender = new Sender
 			{
@@ -55,7 +58,8 @@ namespace CMS.Core.Services
 			Email newMessage = new Email
 			{
 				Subject = string.Join(" ", "Re:", thread.ThreadTitle),
-				TextContent = content,
+				TextContent = messageParser.ComposeTextContent(latestEmail, content),
+				HtmlContent = messageParser.ComposeHtmlContent(latestEmail, content),
 				InResponseTo = latestEmail.ServerMessageId,
 				Senders = new List<Sender> { sender },
 				Recepients = new List<Recepient> { recepient }

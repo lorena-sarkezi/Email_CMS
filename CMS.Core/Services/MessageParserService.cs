@@ -1,5 +1,6 @@
 ﻿using CMS.Data;
 using CMS.Data.Database;
+using HtmlAgilityPack;
 using Microsoft.EntityFrameworkCore;
 using MimeKit;
 using System;
@@ -149,5 +150,65 @@ namespace CMS.Core.Services
 			int listRangeToRemove = (filteredTextBodyNoQuotes.Count - 1) - index;
 			filteredTextBodyNoQuotes.RemoveRange(index, listRangeToRemove);
 		}
+
+		public string ComposeTextContent(Email email, string newMessageContent)
+        {
+			//Add quote to each email line
+			List<string> emailLines = email.TextContent.Split("\r\n").ToList();
+			for (int i = 0; i < emailLines.Count; i++)
+			{
+				emailLines[i] = $">{emailLines[i]}";
+			}
+
+			string tStampDay = email.Timestamp.ToString("ddd, MMMM dd, yyyy");
+			string tStampTime = email.Timestamp.ToString("HH:mm");
+			string emailLinesJoined = String.Join("\r\n", emailLines);
+			string senderEmail = email.Senders.FirstOrDefault().SenderEmail;
+			string senderName = email.Senders.FirstOrDefault().SenderName;
+
+			string messageNew = $"{newMessageContent}\r\n\r\nOn {tStampDay} at {tStampTime} {senderName} <{senderEmail}>\r\nwrote:\r\n\r\n{emailLinesJoined}";
+
+			return messageNew;
+		}
+
+		public string ComposeHtmlContent(Email email, string newMessageContent)
+		{
+			string tStampDay = email.Timestamp.ToString("ddd, MMMM dd, yyyy");
+			string tStampTime = email.Timestamp.ToString("HH:mm");
+			string senderEmail = email.Senders.FirstOrDefault().SenderEmail;
+			string senderName = email.Senders.FirstOrDefault().SenderName;
+
+			var doc = new HtmlDocument();
+
+			HtmlNode msgContent = doc.CreateElement("div");
+			msgContent.InnerHtml = newMessageContent;
+			msgContent.Attributes.Add("dir", "ltr");
+
+			HtmlNode br = doc.CreateElement("br");
+
+			HtmlNode quote = doc.CreateElement("div");
+			quote.AddClass("gmail_quote");
+
+			string mailHref = $"<a href=\"mailto:{senderEmail}\">{senderName}</a>";
+
+			HtmlNode onDateWrote = doc.CreateElement("div");
+			onDateWrote.Attributes.Add("dir", "ltr");
+			onDateWrote.AddClass("gmail_attr");
+			onDateWrote.InnerHtml = $"On  {tStampDay} on {tStampTime} {senderName} &lt;{mailHref}&gt; wrote:<br>";
+
+			HtmlNode blockquote = doc.CreateElement("blockquote");
+			blockquote.AddClass("gmail_quote");
+			blockquote.Attributes.Add("style", "margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex");
+			blockquote.InnerHtml = email.HtmlContent;
+
+			quote.AppendChild(onDateWrote);
+			quote.AppendChild(blockquote);
+
+			doc.DocumentNode.AppendChild(msgContent);
+			doc.DocumentNode.AppendChild(br);
+			doc.DocumentNode.AppendChild(quote);
+
+			return doc.DocumentNode.OuterHtml;
+        }
 	}
 }

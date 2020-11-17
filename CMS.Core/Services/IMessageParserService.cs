@@ -13,6 +13,10 @@ namespace CMS.Core.Services
         Task<Email> ConvertMimeMessageToLocalEmail(MimeMessage mimeMessage);
         Task<ConvoThread> GetConversationThread(string subject);
         void RemoveExtraQuoteRows(ref List<string> filteredTextBodyNoQuotes);
-        
+
+        string ComposeTextContent(Email email, string newMessageContent);
+
+        string ComposeHtmlContent(Email email, string newMessageContent);
+
     }
 }
