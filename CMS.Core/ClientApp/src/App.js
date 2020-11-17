@@ -25,19 +25,19 @@ export default function App() {
     lg: 12
   };
 
+  console.log(tableRecordsCount);
 
   return (
     <>
       <Layout.Header></Layout.Header>
       <Layout.Content>
 
-
         <Row>
           <Col {...sideRowProps}></Col>
           <Col {...mainRowProps}>
             <Switch>
               <Route path="/" exact >
-                <ThreadsTable />
+                <ThreadsTable recordsCount={tableRecordsCount}/>
               </Route>
 
               <Route path="/threads/:threadId">

@@ -23,14 +23,10 @@ const MessageReplyModal = (props) => {
             threadId: props.threadId,
             message: textAreaContent
         };
-        const requestUri = '/api/v1/messaging';
+        const requestUri = '/api/v1/messaging/send';
         const response = await axios.post(requestUri, content);
         
     }
-
-    // useEffect(() => {
-    //     console.log(textAreaContent);
-    // }, []);
 
     return(
         <Modal 

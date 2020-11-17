@@ -1,4 +1,5 @@
 using CMS.Core.Models;
+using CMS.Core.Repositories;
 using CMS.Core.Services;
 using CMS.Data;
 using Microsoft.AspNetCore.Builder;
@@ -27,9 +28,12 @@ namespace Email_CMS
 
             services.AddControllersWithViews();
 
+            //Registered Dependecies
             services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IMessageParserService, MessageParserService>();
+            services.AddTransient<IEmailRepository, EmailRepository>();
+
             services.AddDbContext<CmsDbContext>(
                 options => options.UseMySql(Configuration.GetConnectionString("Default")));
 

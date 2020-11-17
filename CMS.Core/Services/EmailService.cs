@@ -85,16 +85,16 @@ namespace CMS.Core.Services
 			using (var emailClient = new SmtpClient())
 			{
 				//The last parameter here is to use SSL (Which you should!)
-				emailClient.Connect(emailConfiguration.SmtpServer, emailConfiguration.SmtpPortSSL, true);
+				await emailClient.ConnectAsync(emailConfiguration.SmtpServer, emailConfiguration.SmtpPortSSL, true);
 
 				//Remove any OAuth functionality as we won't be using it. 
 				emailClient.AuthenticationMechanisms.Remove("XOAUTH2");
 
-				emailClient.Authenticate(emailConfiguration.SmtpUsername, emailConfiguration.SmtpPassword);
+				await emailClient.AuthenticateAsync(emailConfiguration.SmtpUsername, emailConfiguration.SmtpPassword);
 
-				emailClient.Send(message);
+				await emailClient.SendAsync(message);
 
-				emailClient.Disconnect(true);
+				await emailClient.DisconnectAsync(true);
 			}
 
 			cmsDbContext.Add(email);
@@ -103,7 +103,7 @@ namespace CMS.Core.Services
 			return true;
 		}
 		
-		public async Task<List<MailThreadBasic>> ReceiveMail(int count = 1)
+		public async Task<List<MailThreadBasic>> ReceiveAndProcessMail(int count = 100)
 		{
 			try {
 				using (var emailClient = new Pop3Client())
@@ -152,26 +152,5 @@ namespace CMS.Core.Services
 				throw;
 			}
 		}
-
-		public async Task<List<ThreadViewModel>> GetThreadsListPaged()
-        {
-			List<ThreadViewModel> threads = (await cmsDbContext.Threads.ToListAsync()).Select(x => x.GetViewModel()).ToList();
-			return threads;
-        }
-
-
-		public async Task<ThreadViewModel> GetThread(int threadId)
-        {
-			ConvoThread thread = await cmsDbContext.Threads
-												   .Include(x => x.Emails)
-												   .ThenInclude(x => x.Senders)
-												   .Include(x => x.Emails)
-												   .ThenInclude(x => x.Recepients)
-												   .FirstOrDefaultAsync(x => x.Id == threadId);
-
-			return thread.GetViewModel();
-
-        }
-
 	}
 }
