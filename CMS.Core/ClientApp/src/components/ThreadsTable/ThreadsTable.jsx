@@ -42,10 +42,13 @@ export default function ThreadsTable(props){
         setIsTableLoading(true);
 
         const requestParams ={
-            count:pagination.pageSize,
-            start: pagination.current * pagination.pageSize,
-            end: pagination.current * pagination.pageSize + pagination.pageSize
+            params: {
+                start: (pagination.current-1) * pagination.pageSize,
+                end: (pagination.current-1) * pagination.pageSize + pagination.pageSize
+            }
         }
+
+        console.log(requestParams);
 
         const response = await axios.get("/api/v1/messaging/threads", requestParams)
         
@@ -110,7 +113,7 @@ export default function ThreadsTable(props){
         <>
             <Row>
                 <Col>
-                    <Select onChange={value => handleSetPageSize(value)}>
+                    <Select onChange={value => handleSetPageSize(value)} defaultValue={10}>
                         <Option value={10} >10</Option>
                         <Option value={20}>20</Option>
                         <Option value={30}>30</Option>
@@ -118,7 +121,7 @@ export default function ThreadsTable(props){
                 </Col>
             </Row>
             <Row>
-                <Col>
+                <Col span={24}>
                     <Table {...tableProps}/>
                 </Col>
             </Row>
