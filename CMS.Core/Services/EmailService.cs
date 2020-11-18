@@ -61,6 +61,7 @@ namespace CMS.Core.Services
 				Subject = string.Join(" ", "Re:", thread.ThreadTitle),
 				TextContent = messageParser.ComposeTextContent(latestEmail, content),
 				HtmlContent = messageParser.ComposeHtmlContent(latestEmail, content),
+				MessageContent = content,
 				InResponseTo = latestEmail.ServerMessageId,
 				Senders = new List<Sender> { sender },
 				Recepients = new List<Recepient> { recepient }
