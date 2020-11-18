@@ -57,6 +57,7 @@ namespace CMS.Core.Services
 
 			Email newMessage = new Email
 			{
+				ThreadId = threadId,
 				Subject = string.Join(" ", "Re:", thread.ThreadTitle),
 				TextContent = messageParser.ComposeTextContent(latestEmail, content),
 				HtmlContent = messageParser.ComposeHtmlContent(latestEmail, content),

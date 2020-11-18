@@ -46,7 +46,7 @@ const MessagesDisplayContainer = (props) =>{
 
     return(
         <React.Fragment>
-            <MessageReplyModal visible={showReplyModal} visibleHandler={setShowReplyModal}/>
+            <MessageReplyModal visible={showReplyModal} visibleHandler={setShowReplyModal} threadId={threadId}/>
 
             <Row style={{marginBottom:"5px"}}>
                 <Col flex="0 1 auto">
