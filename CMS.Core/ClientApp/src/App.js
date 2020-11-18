@@ -3,6 +3,7 @@ import { Switch, Route, } from 'react-router-dom';
 
 import ThreadsTable from './components/ThreadsTable';
 import MessagesDisplayContainer from './components/MessagesDisplayContainer';
+import Login from './components/Login';
 
 import { Row, Col, Layout } from 'antd';
 
@@ -25,8 +26,6 @@ export default function App() {
     lg: 12
   };
 
-  console.log(tableRecordsCount);
-
   return (
     <>
       <Layout.Header></Layout.Header>
@@ -37,11 +36,15 @@ export default function App() {
           <Col {...mainRowProps}>
             <Switch>
               <Route path="/" exact >
-                <ThreadsTable recordsCount={tableRecordsCount}/>
+                <ThreadsTable />
               </Route>
 
               <Route path="/threads/:threadId">
                 <MessagesDisplayContainer />
+              </Route>
+
+              <Route path="/login">
+                <Login />
               </Route>
               
             </Switch>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Table, Select, Row, Col} from 'antd';
-import axios from 'axios';
+import axios from '../../axios';
 
 import SmallLayoutSubjectCell from './SmallLayoutSubjectCell';
 import NormalLayoutSubjectCell from './NormalLayoutSubjectCell';

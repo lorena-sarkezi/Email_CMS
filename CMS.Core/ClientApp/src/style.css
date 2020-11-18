@@ -1,3 +1,17 @@
 body{
     background-color: #f0f2f5 !important;
 }
+
+.login-form{
+    max-width: 300px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.login-form-button{
+    width: 100%;
+}
+
+.login-form-register-link{
+    float: right;
+}

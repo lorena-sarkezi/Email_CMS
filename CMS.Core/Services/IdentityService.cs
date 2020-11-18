@@ -35,10 +35,10 @@ namespace CMS.Core.Services
             User user = cmsDbContext.Users.FirstOrDefault(x => x.Username == model.EmailOrUsername || x.Email == model.EmailOrUsername);
 
             if (user == null) return null;
+            
+            byte[] saltedPasswordByteArr = new Rfc2898DeriveBytes(Convert.FromBase64String(model.Password), Encoding.UTF8.GetBytes(user.PasswordSalt), 1000).GetBytes(128);
 
-            byte[] saltedPasswordByteArr = KeyDerivation.Pbkdf2(password, Encoding.ASCII.GetBytes(user.PasswordSalt), KeyDerivationPrf.HMACSHA256, 1000, 64);
-
-            if (Encoding.ASCII.GetString(saltedPasswordByteArr) != user.PasswordHash)
+            if (Convert.ToBase64String(saltedPasswordByteArr) != user.PasswordHash)
                 return null;
 
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
@@ -73,20 +73,20 @@ namespace CMS.Core.Services
 
 
 
-            string submittedPassword = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(model.PasswordBase64));
+            string submittedPassword = Encoding.UTF8.GetString(Convert.FromBase64String(model.PasswordBase64));
             string passwordSalt = string.Empty;
             string passwordHash = string.Empty;
 
             using (RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider())
             {
-                var bytes = new byte[64];
+                var bytes = new byte[16];
                 provider.GetBytes(bytes);
 
                 passwordSalt = new Guid(bytes).ToString();
             }
 
-            byte[] passwordBytes = KeyDerivation.Pbkdf2(submittedPassword, Encoding.ASCII.GetBytes(passwordSalt), KeyDerivationPrf.HMACSHA256, 1000, 64);
-            passwordHash = Encoding.UTF8.GetString(passwordBytes);
+            byte[] passwordBytes = new Rfc2898DeriveBytes(submittedPassword, Encoding.UTF8.GetBytes(passwordSalt), 1000).GetBytes(128);
+            passwordHash = Convert.ToBase64String(passwordBytes);
 
             User user = new User
             {

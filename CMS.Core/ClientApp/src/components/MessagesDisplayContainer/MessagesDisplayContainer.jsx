@@ -8,7 +8,7 @@ import MailTwoTone from '@ant-design/icons/MailTwoTone';
 import MessageDisplayCard from './MessageDisplayCard';
 import MessageReplyModal from './MessageReplyModal';
 
-import axios from 'axios';
+import axios from '../../axios';
 
 
 

@@ -27,6 +27,6 @@ namespace CMS.Data.Database
 
 
         [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public string TimestampCreated { get; set; }
+        public DateTime TimestampCreated { get; set; }
     }
 }
