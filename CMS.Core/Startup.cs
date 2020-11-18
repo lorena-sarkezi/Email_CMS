@@ -2,6 +2,7 @@ using CMS.Core.Models;
 using CMS.Core.Repositories;
 using CMS.Core.Services;
 using CMS.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Email_CMS
 {
@@ -32,10 +36,39 @@ namespace Email_CMS
             services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IMessageParserService, MessageParserService>();
+            services.AddTransient<IIdentityService, IdentityService>();
+
             services.AddTransient<IEmailRepository, EmailRepository>();
+            
 
             services.AddDbContext<CmsDbContext>(
                 options => options.UseMySql(Configuration.GetConnectionString("Default")));
+
+            //JWT Auth Workflow
+            byte[] clientSecretKey = Encoding.ASCII.GetBytes(Configuration["ClientSecret"]);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(clientSecretKey),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+                x.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = context =>
+                    {
+                        context.HttpContext.User = context.Principal;
+                        return Task.CompletedTask;
+                    }
+                };
+            });
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

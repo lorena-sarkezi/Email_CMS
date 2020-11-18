@@ -22,5 +22,6 @@ namespace CMS.Data
         public virtual DbSet<ConvoThread> Threads { get; set; }
         public virtual DbSet<Sender> Senders { get; set; }
         public virtual DbSet<Recepient> Recepients { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }
