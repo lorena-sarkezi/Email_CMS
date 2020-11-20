@@ -111,7 +111,7 @@ export default function ThreadsTable(props){
 
     return(
         <>
-            <Row>
+            {/* <Row>
                 <Col>
                     <Select onChange={value => handleSetPageSize(value)} defaultValue={10}>
                         <Option value={10} >10</Option>
@@ -119,7 +119,7 @@ export default function ThreadsTable(props){
                         <Option value={30}>30</Option>
                     </Select>
                 </Col>
-            </Row>
+            </Row> */}
             <Row>
                 <Col span={24}>
                     <Table {...tableProps}/>

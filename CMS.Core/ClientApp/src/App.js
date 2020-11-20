@@ -4,6 +4,7 @@ import { Switch, Route, } from 'react-router-dom';
 import ThreadsTable from './components/ThreadsTable';
 import MessagesDisplayContainer from './components/MessagesDisplayContainer';
 import Login from './components/Login';
+import AuthorizedRoute from './components/Auth/AuthorizedRoute';
 
 import { Row, Col, Layout } from 'antd';
 
@@ -35,17 +36,15 @@ export default function App() {
           <Col {...sideRowProps}></Col>
           <Col {...mainRowProps}>
             <Switch>
-              <Route path="/" exact >
+              {/* <AuthorizedRoute path="/" exact >
                 <ThreadsTable />
-              </Route>
+              </AuthorizedRoute> */}
 
-              <Route path="/threads/:threadId">
-                <MessagesDisplayContainer />
-              </Route>
+              <AuthorizedRoute path="/" exact  component={ThreadsTable} />
 
-              <Route path="/login">
-                <Login />
-              </Route>
+              <AuthorizedRoute path="/threads/:threadId" component={MessagesDisplayContainer} />
+
+              <Route path="/login" component={Login} />
               
             </Switch>
 

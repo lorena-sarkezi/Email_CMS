@@ -32,7 +32,7 @@ namespace CMS.Core.Services
 
             string password = Encoding.UTF8.GetString(Encoding.UTF8.GetBytes(model.Password));
 
-            User user = cmsDbContext.Users.FirstOrDefault(x => x.Username == model.EmailOrUsername || x.Email == model.EmailOrUsername);
+            User user = cmsDbContext.Users.FirstOrDefault(x => x.Username == model.Username || x.Email == model.Username);
 
             if (user == null) return null;
             
@@ -48,7 +48,6 @@ namespace CMS.Core.Services
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, $"{user.FirstName} {user.LastName}"),
-                //new Claim(ClaimTypes.Role, user.Role.RoleName)
             };
 
             SigningCredentials signingCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
@@ -56,7 +55,8 @@ namespace CMS.Core.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                SigningCredentials = signingCredentials
+                SigningCredentials = signingCredentials,
+                Expires = model.Rememeber == true ? DateTime.Now.AddDays(1) : DateTime.Now.AddDays(7)
             };
 
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
@@ -103,6 +103,35 @@ namespace CMS.Core.Services
 
             return RegistrationStatusResponse.SUCCESS;
 
+        }
+
+        public bool ValidateToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(configuration["ClientSecret"]);
+            try
+            {
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
+
+                var jwtToken = (JwtSecurityToken)validatedToken;
+                var accountId = int.Parse(jwtToken.Claims.First(x => x.Type == "sub").Value);
+
+                // return account id from JWT token if validation successful
+                return true;
+            }
+            catch
+            {
+                // return null if validation fails
+                return false;
+            }
         }
     }
 }

@@ -11,8 +11,19 @@ const TablePagination = props => {
         props.setPageState(data);
     }
 
+    const handleChangePageSize = (value) => {
+        let data = {...props.pageState};
+        data.pageSize = value;
+
+        props.setPageState(data);
+    }
+
     return(
-        <Pagination total={props.total} onChange={(page,pageSize) => handleChangePageNumber(page)} />
+        <Pagination 
+            showSizeChanger
+            total={props.total}
+            onChange={(page,pageSize) => handleChangePageNumber(page)} 
+            onShowSizeChange={(current,pageSize) => handleChangePageSize(pageSize)}/>
     )
 }
 

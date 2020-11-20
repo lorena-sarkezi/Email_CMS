@@ -1,5 +1,6 @@
 body{
-    background-color: #f0f2f5 !important;
+    /* background-color: #f0f2f5 !important; */
+    background: url(./res/24641.jpg);
 }
 
 .login-form{
@@ -14,4 +15,11 @@ body{
 
 .login-form-register-link{
     float: right;
+}
+
+.login-card{
+    margin-top: 10px !important;
+}
+.login-alert{
+    margin-bottom: 10px !important;
 }

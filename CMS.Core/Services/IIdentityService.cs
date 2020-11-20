@@ -10,5 +10,6 @@ namespace CMS.Core.Services
     {
         Task<string> LoginUser(LoginModel model);
         Task<RegistrationStatusResponse> RegisterUser(RegisterModel model);
+        bool ValidateToken(string token);
     }
 }

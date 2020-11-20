@@ -38,5 +38,18 @@ namespace CMS.Core.Controllers
 
             return Unauthorized();
         }
+
+        [HttpGet("validate")]
+        public IActionResult ValidateToken()
+        {
+            string authHeder = HttpContext.Request.Headers["Authorization"];
+
+            if (authHeder == null) return Ok(false);
+
+            string token = authHeder.Split(" ")[1];
+            bool isTokenValid = identityService.ValidateToken(token);
+
+            return Ok(isTokenValid);
+        }
     }
 }

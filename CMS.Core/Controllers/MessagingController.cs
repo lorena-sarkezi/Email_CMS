@@ -7,6 +7,7 @@ using CMS.Core.Repositories;
 using CMS.Core.Services;
 using CMS.Data.Common;
 using CMS.Data.Database;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,7 @@ namespace CMS.Core.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize]
     public class MessagingController : ControllerBase
     {
         private readonly IEmailService emailService;
