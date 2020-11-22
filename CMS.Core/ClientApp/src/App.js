@@ -29,7 +29,19 @@ export default function App() {
 
   return (
     <>
-      <Layout.Header></Layout.Header>
+      <Layout.Header>
+        <Row>
+          <Col{...sideRowProps}></Col>
+          <Col {...mainRowProps}>
+            <h1 className="header-text">
+              EMAIL CMS
+            </h1>
+          </Col>
+          <Col{...sideRowProps}></Col>
+        </Row>
+
+
+      </Layout.Header>
       <Layout.Content>
 
         <Row>
@@ -40,12 +52,12 @@ export default function App() {
                 <ThreadsTable />
               </AuthorizedRoute> */}
 
-              <AuthorizedRoute path="/" exact  component={ThreadsTable} />
+              <AuthorizedRoute path="/" exact component={ThreadsTable} />
 
               <AuthorizedRoute path="/threads/:threadId" component={MessagesDisplayContainer} />
 
               <Route path="/login" component={Login} />
-              
+
             </Switch>
 
           </Col>

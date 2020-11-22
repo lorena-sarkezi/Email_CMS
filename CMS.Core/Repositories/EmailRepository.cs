@@ -31,7 +31,7 @@ namespace CMS.Core.Repositories
                                                    .Include(x => x.Emails)
                                                    .ThenInclude(x => x.Recepients)
                                                    .FirstOrDefaultAsync(x => x.Id == threadId);
-
+            thread.Emails = thread.Emails.OrderByDescending(x => x.Timestamp);
             return thread.GetViewModel();
         }
 

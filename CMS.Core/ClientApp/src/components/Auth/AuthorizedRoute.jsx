@@ -13,33 +13,26 @@ const AuthorizedRoute = ({ component: Component, ...rest }) => {
         if(token === null){
             setAuthState(false);
             setIsCallFinished(true);
-            //return false;
         } 
 
         const request = await axios.get('/api/v1/identity/validate');
 
-
         setAuthState(request.data);
         setIsCallFinished(true);
-        //return request.data; //True or False
     }
 
     useEffect(() => {
-        // const fetchData = async () =>{
-        //     const data = await checkAuthStatus();
-        //     console.log(data);
-        //     setAuthState(data);
-        // };
         checkAuthStatus();
     },[isCallFinished])
 
     console.log(authState);
 
-    const RenderRoute = () => <Route {...rest} render={(props) => (
-        authState === true
-          ? <Component {...props} />
-          : <Redirect to='/login' />
-      )} /> 
+    const RenderRoute = () =>
+        <Route {...rest} render={(props) => (
+            authState === true
+                ? <Component {...props} />
+                : <Redirect to='/login' />
+        )} />;
 
     return(
         isCallFinished === true ? <RenderRoute /> : null

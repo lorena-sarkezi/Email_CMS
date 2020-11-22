@@ -1,6 +1,8 @@
 body{
     /* background-color: #f0f2f5 !important; */
     background: url(./res/24641.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .login-form{
@@ -22,4 +24,14 @@ body{
 }
 .login-alert{
     margin-bottom: 10px !important;
+}
+
+.already-logged-in{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header-text{
+    color: white;
 }
