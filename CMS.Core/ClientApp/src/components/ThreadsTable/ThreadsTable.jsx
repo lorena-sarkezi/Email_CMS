@@ -30,31 +30,44 @@ export default function ThreadsTable(props){
     }
 
     const getPageCount = async () =>{
-        const response = await axios.get("/api/v1/messaging/threads/count")
+        try{
+            const response = await axios.get("/api/v1/messaging/threads/count")
         
-        let data = {...pagination};
-        data.total = response.data;
+            let data = {...pagination};
+            data.total = response.data;
 
-        setPagination(data);
+            setPagination(data);
+        }
+        catch(e){
+            const response = e.response;
+        }
+        
     }
 
     const getThreadsPaged = async () =>{
-        setIsTableLoading(true);
+        try{
+            setIsTableLoading(true);
 
-        const requestParams ={
-            params: {
-                start: (pagination.current-1) * pagination.pageSize,
-                end: (pagination.current-1) * pagination.pageSize + pagination.pageSize
+            const requestParams ={
+                params: {
+                    start: (pagination.current-1) * pagination.pageSize,
+                    end: (pagination.current-1) * pagination.pageSize + pagination.pageSize
+                }
             }
+
+            console.log(requestParams);
+
+            const response = await axios.get("/api/v1/messaging/threads", requestParams)
+            
+            //console.log(response.data);
+            setThreads(response.data);
+            setIsTableLoading(false);
         }
-
-        console.log(requestParams);
-
-        const response = await axios.get("/api/v1/messaging/threads", requestParams)
-        
-        //console.log(response.data);
-        setThreads(response.data);
-        setIsTableLoading(false);
+        catch(e){
+            const response = e.response;
+            setIsTableLoading(false);
+        }
+    
     }
 
     useEffect(()=>{

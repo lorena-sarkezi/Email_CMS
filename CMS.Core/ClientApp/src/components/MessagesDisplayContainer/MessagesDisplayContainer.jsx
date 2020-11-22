@@ -32,12 +32,18 @@ const MessagesDisplayContainer = (props) =>{
     const [showReplyModal, setShowReplyModal] = useState(false);
 
     const getThreadMessages = async () =>{
-        setIsLoading(true);
-        const response = await axios.get(`/api/v1/messaging/threads/${threadId}`);
-        setIsLoading(false);
+        try{
+            setIsLoading(true);
+            const response = await axios.get(`/api/v1/messaging/threads/${threadId}`);
+            setIsLoading(false);
 
-        console.log(response.data);
-        setThreadData(response.data);
+            console.log(response.data);
+            setThreadData(response.data);
+        }
+        catch(e){
+            const response = e.response;
+            setIsLoading(false);
+        }
     }
 
     useEffect(() =>{
