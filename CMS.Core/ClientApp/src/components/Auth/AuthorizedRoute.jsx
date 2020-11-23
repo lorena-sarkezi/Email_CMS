@@ -15,10 +15,20 @@ const AuthorizedRoute = ({ component: Component, ...rest }) => {
             setIsCallFinished(true);
         } 
 
-        const request = await axios.get('/api/v1/identity/validate');
+        try{
+            const request = await axios.get('/api/v1/identity/validate');
 
-        setAuthState(request.data);
-        setIsCallFinished(true);
+            setAuthState(request.data);
+            setIsCallFinished(true);
+        }
+        catch(e){
+            const response = e.response;
+
+            setAuthState(false);
+            setIsCallFinished(true);
+        }
+
+        
     }
 
     useEffect(() => {

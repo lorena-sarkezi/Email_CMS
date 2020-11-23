@@ -105,13 +105,13 @@ export default function ThreadsTable(props){
             title:"Latest message",
             dataIndex:"latestMessageTimestamp",
             key:"latestMessageTimestamp"
-        },
-        {
-            title:"",
-            key:"latestMessageTimestamp",
-            render: (text,row) => <DeleteThreadButton />
-            
         }
+        // {
+        //     title:"",
+        //     key:"latestMessageTimestamp",
+        //     render: (text,row) => <DeleteThreadButton />
+            
+        // }
 
     ]
 

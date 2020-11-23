@@ -1,13 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {Card, Spin} from 'antd';
-
 import axios from '../../axios';
 
-import LoginForm from './LoginForm';
-import AlreadyLoggedIn from './AlreadyLoggedIn';
 
-const Login = props => {    
+import AlreadyRegistered from './AlreadyRegistered';
+import RegisterForm from './RegisterForm';
 
+const Register = props => {
     const [authState, setAuthState] = useState(false);
     const [isCallFinished, setIsCallFinished] = useState(false);
 
@@ -36,7 +35,7 @@ const Login = props => {
         checkAuthStatus();
     },[isCallFinished, authState])
 
-    const LoginSpinner = () => {
+    const RegisterSpinner = () => {
         return(
             <div className="div-text-content-centered">
                 <Spin />
@@ -44,27 +43,24 @@ const Login = props => {
         )
     }
 
-    const LoginFormDisplay = () => {
+    const RegisterFormDisplay = () => {
         if(isCallFinished === true){
             return(
                 authState === false
-                ? <LoginForm />
-                : <AlreadyLoggedIn />
+                ? <RegisterForm />
+                : <AlreadyRegistered />
             )
             
         }
-        return <LoginSpinner />;
+        return <RegisterSpinner />;
     }
-        
-        
-    
 
     return (
         <Card className="login-card">
-            <LoginFormDisplay />
+            <RegisterFormDisplay />
         </Card>
         
     )
-};
+}
 
-export default Login;
+export default Register;

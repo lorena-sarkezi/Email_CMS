@@ -10,6 +10,6 @@ namespace CMS.Data.Common
         public string LastName { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
-        public string PasswordBase64 { get; set; }
+        public string Password { get; set; }  //Base64 Encoded
     }
 }

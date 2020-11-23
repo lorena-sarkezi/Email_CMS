@@ -73,7 +73,7 @@ namespace CMS.Core.Services
 
 
 
-            string submittedPassword = Encoding.UTF8.GetString(Convert.FromBase64String(model.PasswordBase64));
+            string submittedPassword = Encoding.UTF8.GetString(Convert.FromBase64String(model.Password));
             string passwordSalt = string.Empty;
             string passwordHash = string.Empty;
 

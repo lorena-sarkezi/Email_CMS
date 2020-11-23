@@ -1,17 +1,29 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Switch, Route, } from 'react-router-dom';
 
 import ThreadsTable from './components/ThreadsTable';
 import MessagesDisplayContainer from './components/MessagesDisplayContainer';
 import Login from './components/Login';
 import AuthorizedRoute from './components/Auth/AuthorizedRoute';
+import Header from './components/Header';
+import Register from './components/Register';
 
-import { Row, Col, Layout } from 'antd';
+import {AuthContext} from './components/Auth/AuthContext';
+
+import { Row, Col, Layout} from 'antd';
 
 import './style.css';
 import 'antd/dist/antd.css';
 
 export default function App() {
+
+  const [globalAuthState, setGlobalAuthState] = useState(false);
+
+  const userContextVal = {
+    value: globalAuthState,
+    update: value => setGlobalAuthState(value)
+  };
+
 
   const sideRowProps = {
     xs: 0,
@@ -28,35 +40,39 @@ export default function App() {
   };
 
   return (
-    <>
-      <Layout.Header>
+    <AuthContext.Provider value={userContextVal}>
+      <Layout.Header style={{padding: "0px"}}>
         <Row>
-          <Col{...sideRowProps}></Col>
+          <Col {...sideRowProps}></Col>
           <Col {...mainRowProps}>
-            <h1 className="header-text">
-              EMAIL CMS
-            </h1>
+           <Header />
+            
           </Col>
-          <Col{...sideRowProps}></Col>
+          <Col {...sideRowProps}></Col>
         </Row>
 
 
       </Layout.Header>
+
+
+
       <Layout.Content>
 
         <Row>
           <Col {...sideRowProps}></Col>
           <Col {...mainRowProps}>
             <Switch>
-              {/* <AuthorizedRoute path="/" exact >
-                <ThreadsTable />
-              </AuthorizedRoute> */}
+
+
+
 
               <AuthorizedRoute path="/" exact component={ThreadsTable} />
 
               <AuthorizedRoute path="/threads/:threadId" component={MessagesDisplayContainer} />
 
               <Route path="/login" component={Login} />
+
+              <Route path="/register" component={Register} />
 
             </Switch>
 
@@ -65,7 +81,7 @@ export default function App() {
         </Row>
       </Layout.Content>
 
-    </>
+    </AuthContext.Provider>
 
   );
 }
