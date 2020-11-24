@@ -23,7 +23,6 @@ const MessageReplyModal = (props) => {
             threadId: parseInt(props.threadId),
             messageContent: textAreaContent
         };
-        //console.log(content);
         const requestUri = '/api/v1/messaging/send';
         const response = await axios.post(requestUri, content);
         props.visibleHandler(false);
@@ -37,6 +36,7 @@ const MessageReplyModal = (props) => {
             visible={props.visible}
             onCancel={() => handleCancel()}
             onOk={() => handleConfirm()}
+            destroyOnClose={true}
         >
             <TextArea 
                 placeholder="Type your message here..."

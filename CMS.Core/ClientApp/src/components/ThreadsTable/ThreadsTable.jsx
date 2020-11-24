@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Table, Select, Row, Col} from 'antd';
+import {Table, Select, Row, Col, notification} from 'antd';
 import axios from '../../axios';
 
 import SmallLayoutSubjectCell from './SmallLayoutSubjectCell';
@@ -10,7 +10,7 @@ import TablePagination from './TablePagination';
 
 const {Option} = Select;
 
-const defaultPagination = {
+const initialPagination = {
     current: 1,
     total: 10,
     pageSize: 10
@@ -20,7 +20,7 @@ export default function ThreadsTable(props){
 
     const [threads, setThreads] = useState(null);
     const [isTableLoading, setIsTableLoading] = useState(false);
-    const [pagination, setPagination] = useState(defaultPagination);
+    const [pagination, setPagination] = useState(initialPagination);
 
     const handleSetPageSize = value => {
         let current = {...pagination};
@@ -66,6 +66,9 @@ export default function ThreadsTable(props){
         catch(e){
             const response = e.response;
             setIsTableLoading(false);
+            notification["error"]({
+                message:"An error occured."
+            });
         }
     
     }

@@ -16,7 +16,7 @@ import './style.css';
 import 'antd/dist/antd.css';
 
 export default function App() {
-
+  
   const [globalAuthState, setGlobalAuthState] = useState(false);
 
   const userContextVal = {
@@ -68,7 +68,7 @@ export default function App() {
 
               <AuthorizedRoute path="/" exact component={ThreadsTable} />
 
-              <AuthorizedRoute path="/threads/:threadId" component={MessagesDisplayContainer} />
+              <Route path="/threads/:threadId" component={MessagesDisplayContainer} />
 
               <Route path="/login" component={Login} />
 

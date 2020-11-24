@@ -27,7 +27,7 @@ namespace CMS.Core.Controllers
             RegistrationStatusResponse status = await identityService.RegisterUser(model);
             if (status == RegistrationStatusResponse.SUCCESS) return Ok();
 
-            return BadRequest();
+            return BadRequest(status);
         }
 
         [HttpPost("login")]

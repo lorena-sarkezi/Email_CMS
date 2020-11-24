@@ -65,12 +65,14 @@ namespace CMS.Core.Services
 
         public async Task<RegistrationStatusResponse> RegisterUser(RegisterModel model)
         {
+            int usernameEmailCount = await cmsDbContext.Users.Where(x => x.Username == model.Username && x.Email == model.Email).CountAsync();
+            if (usernameEmailCount > 0) return RegistrationStatusResponse.EMAIL_USERNAME_EXIST;
+
             int emailCount = await cmsDbContext.Users.Where(x => x.Email == model.Email).CountAsync();
             if (emailCount > 0) return RegistrationStatusResponse.EMAIL_EXISTS;
 
             int usernameCount = await cmsDbContext.Users.Where(x => x.Username == model.Username).CountAsync();
             if (usernameCount > 0) return RegistrationStatusResponse.USERNAME_EXISTS;
-
 
 
             string submittedPassword = Encoding.UTF8.GetString(Convert.FromBase64String(model.Password));

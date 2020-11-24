@@ -2,26 +2,26 @@ import React from 'react';
 
 import { Pagination } from 'antd';
 
-const TablePagination = props => {
+const TablePagination = ({pageState, setPageState,total}) => {
 
     const handleChangePageNumber = value => {
-        let data = {...props.pageState};
+        let data = {...pageState};
         data.current = value;
 
-        props.setPageState(data);
+        setPageState(data);
     }
 
     const handleChangePageSize = (value) => {
-        let data = {...props.pageState};
+        let data = {...pageState};
         data.pageSize = value;
 
-        props.setPageState(data);
+        setPageState(data);
     }
 
     return(
         <Pagination 
             showSizeChanger
-            total={props.total}
+            total={total}
             onChange={(page,pageSize) => handleChangePageNumber(page)} 
             onShowSizeChange={(current,pageSize) => handleChangePageSize(pageSize)}/>
     )
