@@ -59,6 +59,7 @@ namespace CMS.Core.Services
 			{
 				ThreadId = threadId,
 				Subject = string.Join(" ", "Re:", thread.ThreadTitle),
+				Timestamp = DateTime.Now,
 				TextContent = messageParser.ComposeTextContent(latestEmail, content),
 				HtmlContent = messageParser.ComposeHtmlContent(latestEmail, content),
 				MessageContent = content,

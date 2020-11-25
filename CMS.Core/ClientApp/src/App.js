@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Switch, Route, } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import ThreadsTable from './components/ThreadsTable';
 import MessagesDisplayContainer from './components/MessagesDisplayContainer';
@@ -7,6 +7,7 @@ import Login from './components/Login';
 import AuthorizedRoute from './components/Auth/AuthorizedRoute';
 import Header from './components/Header';
 import Register from './components/Register';
+import NotFound from './components/Misc/NotFound';
 
 import {AuthContext} from './components/Auth/AuthContext';
 
@@ -73,6 +74,10 @@ export default function App() {
               <Route path="/login" component={Login} />
 
               <Route path="/register" component={Register} />
+
+              <Route path="/notfound" component={NotFound} />
+
+              <Route path="*" component={() => <Redirect to="/notfound" />} />
 
             </Switch>
 

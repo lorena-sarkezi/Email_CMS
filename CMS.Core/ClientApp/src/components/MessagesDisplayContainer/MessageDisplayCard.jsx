@@ -9,20 +9,31 @@ const MessageDisplayCard = (props) => {
     };
 
     const titleColor={
-        backgroundColor: props.record.isOwnMessage === true ? 'white' : '#91d5ff'
+        backgroundColor: props.record.isOwnMessage === false ? 'white' : '#91d5ff'
     };
 
     const cardStyle={
         marginBottom: '20px'
     }
 
-    console.log(titleColor);
     
-    console.log(props.record);
     
     const sender = `${props.record.senderName} (${props.record.senderEmail})`
+
+    const CardTitle = () => {
+        const dateFormatted = props.record.timestamp.replace("T"," ")
+        return(
+            <div>
+                <b>{sender}</b>
+                <p style={{marginBottom:"0px"}}>At: {dateFormatted}</p>
+            </div>
+
+            
+        )
+    }
+
     return(
-        <Card title={sender} headStyle={titleColor} style={cardStyle}>
+        <Card title={<CardTitle />} headStyle={titleColor} style={cardStyle}>
             <div style={textWrap} >
                 {props.record.messageContent}
             </div>

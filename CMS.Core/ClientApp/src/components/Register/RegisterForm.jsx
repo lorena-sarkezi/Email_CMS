@@ -190,10 +190,15 @@ const RegisterForm = props => {
                     />
                 </Form.Item>
                 
-                {/* <Form.Item>
-                    Already have an account?
-                    <Link to="/login" className="login-form-register-link">Sign In</Link>
-                </Form.Item> */}
+                <Form.Item>
+                    <Link to="/login" className="login-form-register-link">&nbsp;Sign In</Link>
+
+                    <p className="login-form-register-link">
+                        Already have an account? 
+                    </p>
+                    
+                    
+                </Form.Item>
 
 
 

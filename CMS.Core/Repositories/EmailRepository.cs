@@ -31,8 +31,12 @@ namespace CMS.Core.Repositories
                                                    .Include(x => x.Emails)
                                                    .ThenInclude(x => x.Recepients)
                                                    .FirstOrDefaultAsync(x => x.Id == threadId);
-            thread.Emails = thread.Emails.OrderByDescending(x => x.Timestamp);
-            return thread.GetViewModel();
+            if(thread != null)
+            {
+                thread.Emails = thread?.Emails?.OrderByDescending(x => x.Timestamp);
+            }
+            
+            return thread?.GetViewModel();
         }
 
         public async Task<List<ThreadViewModel>> FetchThreadsPaged(int start, int end)

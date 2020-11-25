@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import { Card, Spin, Button, Col, Row } from 'antd';
 
 import LeftOutlined from '@ant-design/icons/LeftOutlined';
@@ -15,7 +15,7 @@ import axios from '../../axios';
 const LoadingSpinner = () => {
     return(
         <div style={{textAlign:"center"}}>
-            <Spin size="large" />
+            <Spin size="large" style={{color:"white"}}/>
         </div>
     )
 }
@@ -25,8 +25,11 @@ const MessagesDisplayContainer = (props) =>{
 
     const {threadId} = useParams();
 
+    const history = useHistory();
+
     console.log(threadId);
 
+    const [dummyState, setDummyState] = useState(false);
     const [threadData, setThreadData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [showReplyModal, setShowReplyModal] = useState(false);
@@ -37,22 +40,37 @@ const MessagesDisplayContainer = (props) =>{
             const response = await axios.get(`/api/v1/messaging/threads/${threadId}`);
             setIsLoading(false);
 
-            console.log(response.data);
             setThreadData(response.data);
         }
         catch(e){
             const response = e.response;
+            console.log(response);
+            if(response.status === 404){
+                history.push("/notfound");
+            }
             setIsLoading(false);
         }
     }
 
+    const visibleHandler= (state) => {
+        setShowReplyModal(state);
+        if(state === false) 
+            setDummyState(!dummyState);
+    }
+
     useEffect(() =>{
+        console.log("Render");
         getThreadMessages();
-    }, [])
+    }, [dummyState])
 
     return(
         <React.Fragment>
-            <MessageReplyModal visible={showReplyModal} visibleHandler={setShowReplyModal} threadId={threadId}/>
+            <MessageReplyModal 
+                visible={showReplyModal} 
+                visibleHandler={setShowReplyModal} 
+                threadId={threadId} 
+                dummmyState={dummyState}
+                dummyStateCallback={setDummyState}/>
 
             <Row style={{marginBottom:"5px"}}>
                 <Col flex="0 1 auto">

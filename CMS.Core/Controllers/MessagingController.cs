@@ -47,9 +47,11 @@ namespace CMS.Core.Controllers
         }
 
         [HttpGet("threads/{threadId}")]
-        public async Task<ThreadViewModel> GetThread([FromRoute] int threadId)
+        public async Task<IActionResult> GetThread([FromRoute] int threadId)
         {
-            return await emailRepository.GetEntireThreadById(threadId);
+            ThreadViewModel thread = await emailRepository.GetEntireThreadById(threadId);
+            if (thread == null) return NotFound();
+            return Ok(thread);
         }
 
         [HttpPost("send")]

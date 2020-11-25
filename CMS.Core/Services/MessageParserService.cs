@@ -43,7 +43,7 @@ namespace CMS.Core.Services
 				thread = await GetConversationThread(subjects[0]);
 			}
 
-			thread.LatestMessageTimestamp = mimeMessage.Date.LocalDateTime.Date;
+			thread.LatestMessageTimestamp = mimeMessage.Date.LocalDateTime;
 			
 
 			List<Sender> senders = mimeMessage.From.Select(x => (MailboxAddress)x).Select(x => new Sender

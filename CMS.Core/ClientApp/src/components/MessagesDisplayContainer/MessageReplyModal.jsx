@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import axios from '../../axios';
-import { Input, Modal } from 'antd';
-import { preProcessFile } from 'typescript';
+import { Input, Modal, Spin, Button } from 'antd';
+import { couldStartTrivia, preProcessFile } from 'typescript';
 
 const MessageReplyModal = (props) => {
 
     const [textAreaContent, setTextAreaContent] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const {TextArea} = Input;
 
@@ -18,25 +19,46 @@ const MessageReplyModal = (props) => {
         props.visibleHandler(false);
     }
 
+    const CancelButton = ({cancelHandler}) => {
+        return(
+            <Button onClick={() => cancelHandler()}>
+                Cancel
+            </Button>
+        )
+    }
+
+    const ConfirmButton = ({confirmHandler}) =>  {
+        return(
+            <Button onClick={confirmHandler} loading={isLoading} type="primary">
+                Send
+            </Button>
+        )
+    }
+
     const handleConfirm = async () => {
+        setIsLoading(true);
         const content = {
             threadId: parseInt(props.threadId),
             messageContent: textAreaContent
         };
+    
         const requestUri = '/api/v1/messaging/send';
         const response = await axios.post(requestUri, content);
+
+        setIsLoading(false);
+        props.dummyStateCallback(!props.dummmyState);
         props.visibleHandler(false);
     }
-
-    console.log(props);
 
     return(
         <Modal 
             title="Compose a reply"
             visible={props.visible}
-            onCancel={() => handleCancel()}
-            onOk={() => handleConfirm()}
             destroyOnClose={true}
+            footer={[
+                <CancelButton cancelHandler={handleCancel}/>,
+                <ConfirmButton confirmHandler={handleConfirm}/>
+            ]}
         >
             <TextArea 
                 placeholder="Type your message here..."
@@ -44,6 +66,7 @@ const MessageReplyModal = (props) => {
                 value={textAreaContent} 
                 onChange={event => setTextAreaContent(event.target.value)} />
         </Modal>
+        
     )
 }
 
