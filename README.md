@@ -33,4 +33,4 @@ Can reply to emails using basic messages (no rich editing or multimedia support)
 
 ![Imgur](https://i.imgur.com/aMDEYqC.png)
 
-![Imgur](https://i.imgur.com/DcCUSXo.png =250x)
+<img src="https://i.imgur.com/DcCUSXo.png" width="480px" />
