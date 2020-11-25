@@ -2,14 +2,25 @@
 
 ## 1. Tech info
 Backend:
-* NET Core 5 
-* EF Core 3
-* MySQL 8
+* .NET Core 5 Framework
+* Entity Framework Core ORM
+* MySQL 
 
 Frontend:
 * React.JS + [Ant Design](https://ant.design/components/overview/)
 
-## 2. Screenshots
+JWT/Bearer tokens used for Auth
+
+## 2. General info
+A simple email parsing and management system. Supports login and registration, uses JWT Tokens for Auth, only login and registration are accessible without a valid login.
+
+Connects to a Gmail inbox (ntpwstvzcms@gmail.com) for receiving and sending emails.
+
+Attempts to parse incoming emails, and assemble existing threads by using thread # in email subject
+
+Can reply to emails using basic messages (no rich editing or multimedia support).
+
+## 3. Screenshots
 ![Imgur](https://i.imgur.com/5FqVgaa.png)
 
 ![Imgur](https://i.imgur.com/7Bt3lNw.png)
