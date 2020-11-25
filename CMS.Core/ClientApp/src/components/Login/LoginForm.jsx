@@ -55,7 +55,6 @@ const LoginForm = props => {
         try {
             setIsLoading(true);
             const response = await axios.post('/api/v1/identity/login', data);
-            console.log(response);
             if (response.status == 200) {
                 localStorage.setItem('token', response.data);
                 setIsLoading(false);
@@ -65,12 +64,9 @@ const LoginForm = props => {
         }
         catch (e) {
             const response = e.response;
-            console.log("Response");
-            console.log(response);
             setIsLoading(false);
 
             if (response !== undefined && response.status == 401) {
-                console.log("Wrong creds");
                 setCredentialsIncorrect(true);
             }
             else {

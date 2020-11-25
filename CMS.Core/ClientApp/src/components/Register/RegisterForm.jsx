@@ -42,8 +42,6 @@ const RegisterForm = props => {
         data.password = btoa(data.password);
         delete data.passwordConfirm;
 
-        console.log(data);
-
         try{
             const response = await axios.post('/api/v1/identity/register', data);
             

@@ -27,12 +27,6 @@ namespace CMS.Core.Controllers
             this.emailRepository = emailRepository;
         }        
 
-        //[HttpGet("fetch")]
-        //public async Task<List<MailThreadBasic>> FetchEmail()
-        //{
-        //    return await emailService.ReceiveAndProcessMail();
-        //}
-
         [HttpGet("threads")]
         public async Task<List<ThreadViewModel>> GetMailThreadsListPaged([FromQuery]int start, [FromQuery]int end)
         {

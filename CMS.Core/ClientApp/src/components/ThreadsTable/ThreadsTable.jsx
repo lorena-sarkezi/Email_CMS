@@ -55,11 +55,8 @@ export default function ThreadsTable(props){
                 }
             }
 
-            console.log(requestParams);
-
             const response = await axios.get("/api/v1/messaging/threads", requestParams)
             
-            //console.log(response.data);
             setThreads(response.data);
             setIsTableLoading(false);
         }

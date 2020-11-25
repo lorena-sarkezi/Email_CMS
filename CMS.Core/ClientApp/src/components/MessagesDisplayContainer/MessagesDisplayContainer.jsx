@@ -27,8 +27,6 @@ const MessagesDisplayContainer = (props) =>{
 
     const history = useHistory();
 
-    console.log(threadId);
-
     const [dummyState, setDummyState] = useState(false);
     const [threadData, setThreadData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -44,7 +42,6 @@ const MessagesDisplayContainer = (props) =>{
         }
         catch(e){
             const response = e.response;
-            console.log(response);
             if(response.status === 404){
                 history.push("/notfound");
             }
@@ -59,7 +56,6 @@ const MessagesDisplayContainer = (props) =>{
     }
 
     useEffect(() =>{
-        console.log("Render");
         getThreadMessages();
     }, [dummyState])
 

@@ -51,8 +51,6 @@ const Header = (props) => {
     }
 
     useEffect(() => {
-        console.log("Auth context");
-        console.log(authContext);
         checkAuthStatus();
     },[isCallFinished, authContext])
 

@@ -35,8 +35,6 @@ const AuthorizedRoute = ({ component: Component, ...rest }) => {
         checkAuthStatus();
     },[isCallFinished])
 
-    console.log(authState);
-
     const RenderRoute = () =>
         <Route {...rest} render={(props) => (
             authState === true
