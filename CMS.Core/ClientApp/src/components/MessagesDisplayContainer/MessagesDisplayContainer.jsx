@@ -22,6 +22,12 @@ const LoadingSpinner = () => {
 
 
 const MessagesDisplayContainer = (props) =>{
+    if(localStorage.getItem("modal") ===null)
+        localStorage.setItem("modal",false);
+
+
+    const modalBool = localStorage.getItem("modal") == 'true' ? true : false;
+    console.log(modalBool);
 
     const {threadId} = useParams();
 
@@ -30,7 +36,7 @@ const MessagesDisplayContainer = (props) =>{
     const [dummyState, setDummyState] = useState(false);
     const [threadData, setThreadData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [showReplyModal, setShowReplyModal] = useState(false);
+    const [showReplyModal, setShowReplyModal] = useState(modalBool);
 
     const getThreadMessages = async () =>{
         try{
@@ -50,20 +56,25 @@ const MessagesDisplayContainer = (props) =>{
     }
 
     const visibleHandler= (state) => {
+        console.log("Visble handler ");
+        console.log(state);
+        localStorage.setItem("modal",state);
+
         setShowReplyModal(state);
         if(state === false) 
             setDummyState(!dummyState);
     }
 
     useEffect(() =>{
+        console.log("Render");
         getThreadMessages();
-    }, [dummyState])
+    }, [])
 
     return(
         <React.Fragment>
             <MessageReplyModal 
                 visible={showReplyModal} 
-                visibleHandler={setShowReplyModal} 
+                visibleHandler={visibleHandler} 
                 threadId={threadId} 
                 dummmyState={dummyState}
                 dummyStateCallback={setDummyState}/>
@@ -81,7 +92,7 @@ const MessagesDisplayContainer = (props) =>{
 
                 <Col flex="0 1 auto">
                     <Link to="#" >
-                        <Button tyle="default" icon={<MailTwoTone />} onClick={() => setShowReplyModal(true)}>
+                        <Button tyle="default" icon={<MailTwoTone />} onClick={() => visibleHandler(true)}>
                             Reply
                         </Button> 
                     </Link>

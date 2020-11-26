@@ -5,15 +5,16 @@ import axios from '../../axios';
 
 const AuthorizedRoute = ({ component: Component, ...rest }) => {
 
-    const [authState, setAuthState] = useState(false);
+    const [authState, setAuthState] = useState(true);
     const [isCallFinished, setIsCallFinished] = useState(false);
 
     const checkAuthStatus = async () => {
         const token = localStorage.getItem('token');
+        console.log(token);
         if(token === null){
             setAuthState(false);
             setIsCallFinished(true);
-        } 
+        }
 
         try{
             const request = await axios.get('/api/v1/identity/validate');
@@ -33,7 +34,7 @@ const AuthorizedRoute = ({ component: Component, ...rest }) => {
 
     useEffect(() => {
         checkAuthStatus();
-    },[isCallFinished])
+    },[])
 
     const RenderRoute = () =>
         <Route {...rest} render={(props) => (

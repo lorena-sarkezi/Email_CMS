@@ -30,6 +30,7 @@ namespace CMS.Core.Repositories
                                                    .ThenInclude(x => x.Senders)
                                                    .Include(x => x.Emails)
                                                    .ThenInclude(x => x.Recepients)
+                                                   .OrderByDescending(x => x.LatestMessageTimestamp)
                                                    .FirstOrDefaultAsync(x => x.Id == threadId);
             if(thread != null)
             {

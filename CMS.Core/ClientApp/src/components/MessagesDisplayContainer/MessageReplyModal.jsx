@@ -54,7 +54,7 @@ const MessageReplyModal = (props) => {
         <Modal 
             title="Compose a reply"
             visible={props.visible}
-            destroyOnClose={true}
+            //destroyOnClose={true}
             footer={[
                 <CancelButton cancelHandler={handleCancel}/>,
                 <ConfirmButton confirmHandler={handleConfirm}/>

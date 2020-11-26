@@ -69,7 +69,7 @@ export default function App() {
 
               <AuthorizedRoute path="/" exact component={ThreadsTable} />
 
-              <Route path="/threads/:threadId" component={MessagesDisplayContainer} />
+              <AuthorizedRoute path="/threads/:threadId" component={MessagesDisplayContainer} />
 
               <Route path="/login" component={Login} />
 
