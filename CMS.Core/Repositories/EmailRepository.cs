@@ -42,7 +42,11 @@ namespace CMS.Core.Repositories
 
         public async Task<List<ThreadViewModel>> FetchThreadsPaged(int start, int end)
         {
-            List<ConvoThread> threads = await cmsDbContext.Threads.Skip(start).Take(end).ToListAsync();
+            List<ConvoThread> threads = await cmsDbContext.Threads
+                                                          .Skip(start)
+                                                          .Take(end)
+                                                          .OrderByDescending(x => x.LatestMessageTimestamp)
+                                                          .ToListAsync();
             List<ThreadViewModel> viewThreads = threads.Select(x => x.GetViewModel()).ToList();
             
             return viewThreads;

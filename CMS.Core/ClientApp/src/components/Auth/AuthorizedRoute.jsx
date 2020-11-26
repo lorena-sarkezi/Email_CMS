@@ -45,6 +45,7 @@ const AuthorizedRoute = ({ component: Component, ...rest }) => {
 
     return(
         isCallFinished === true ? <RenderRoute /> : null
+        // <Component />
     )
 }
 
