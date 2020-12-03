@@ -4,7 +4,7 @@
 Backend:
 * .NET Core 5 Framework
 * Entity Framework Core ORM
-* MySQL 
+* MSSQL or MySQL
 
 Frontend:
 * React.JS + [Ant Design](https://ant.design/components/overview/)
